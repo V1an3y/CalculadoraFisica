@@ -35,7 +35,6 @@
         </select>
         <br>
     <label for="velocidadUnidad">Unidades de velocidad:</label>
-    <input type="text" id="velocidadUnidad" name="velocidadUnidad">
     <select id="velocidadUnidad">
         <option Value="metros_por_segundo">m/s</option>
         <option Value="pies_por_segundo">ft/s</option>
@@ -47,16 +46,73 @@
         <button type="button" class="btn btn-info" value="Calcular" onclick="Calcular()">Calcular</button>
         </form>
         <br>
-        <p style="color: #3d3ded"; background-color:#517DBA>Velocidad: <span id="velocidad"></span></p>
+        
+        <p id="resultado"></p>
 
+        <p style="color: #3d3ded"; background-color:#517DBA>Velocidad: <span id="velocidad"></span></p>
+        <p style="color: rgba(179, 15, 165, 0.74)"; background-color:#517DBA>Aceleracion: <span id="aceleracion"></span></p>
+        <p style="color: #3d3ded"; background-color:#517DBA>Rapidez: <span id="rapidez"></span></p>
+        
         <script>
             function Calcular(){
                 const distancia= parseFloat(document.getElementById('distancia').value);
-                
-                console.log("La distancia es: " +distancia);
-                document.getElementById('velocidad').
-                textContent=distancia.toFixes(4) + '' +distancia;
+                const tiempo= parseFloat(document.getElementById('tiempo').value);
+
+               //eatas 3 variables son para para poner las unidades metricas
+               const distanciaUnidad= parseFloat(document.getElementById('distanciaUnidad').value);
+               const tiempoUnidad= parseFloat(document.getElementById('tiempoUnidad').value);
+               const = velocidadUnidad(document.getElementById('velocidadUnidad').value);
+
+               //convertir unidades a Sistema Metrico Internacional
+                 let distanciaSI = 0; //<--modifico esta linea
+                 let tiempoSI = 0; //<--modifico esta linea
+
+                 //Dependiendo las unidades que seleccionaron, uso este:
+                  if(distanciaUnidad ==='metros'){
+                    distanciaSI=distancia;
+                  }else if (distancaiUnidad ==='pies'){
+                    distanciaSI = distancia/3.281;//son 3 pes por cada metro, por eso la division de 3.281, para mas informacion, checar sus apuntes de fisica.
+                  }
+                  if (tiempoUnidad === 'segundos'){
+                    tiempoSI = tiempo;
+                  }else if (tiempoUnidad === 'horas'){
+                    tiempoSI= tiempo * 3600;//lo mismo que arriba, multiplico po 3600 para la cantidad de segundos en un minuto (60) por los 60 minutos de una hora
+                  }
+
+                  // con el siguiente codigo, voy a calcular la velocidad , aceleracion y la rapidez(aunque no hay formula por lo pronto para ella, solo dire que es igual a la velocidad)
+                  let velocidad = 0;
+                  let aceleracion = 0;
+                  let rapidez = 0;
+
+                  if (velocidadUnidad === 'metro_por_segundo'){
+                    velocidad = distanciaSI / tiempoSI;
+                    rapidez = velocidad; 
+                    aceleracion = velocidad / tiempoSI;
+                  }
+                  else if (velocidadUnidad === 'pies_por_segundos'){
+                    velocidad = (distanciaSI * 3.281) / tiempoSI;
+                    rapidez = velocidad; 
+                    aceleracion = velocidad / tiempoSI;
+                  }
+                  else if (velocidadUnidad === 'kilometros_por_hora'){
+                    velocidad = (distanciaSI / 1000) / (tiempoSI /3600);
+                    rapidez = velocidad; 
+                    aceleracion = velocidad / (tiempoSI /3600);
             }
-        </script>
+            else if (velocidadUnidad === 'millas_por_hora'){
+                    velocidad = (distanciaSI / 1609) / (tiempoSI / 3600);
+                    rapidez = velocidad; 
+                    aceleracion = velocidad / (tiempoSI /3600);
+            }
+            //mostrar resultados
+            let resultado = '';
+
+            document.getElementById('velocidad').textContent = velocidad.toFixed(2) + ' ' + velocidadUnidad; //el 2 son la cantidad despues del punro decimal cunado se haga la division, lo que dice velocidadUnidad, son las unidades que hice en el from de arriba,
+            document.getElementById('aceleracion').textContent = aceleracion.toFixed(2) + ' ' + 'm/s^2';
+            document.getElementById('rapidez').textContent = rapidez.toFixed(2) + ' ' + velocidadUnidad;
+
+            document.getElementById('resultado').innerHTML = resultado;//mas o menos esta lines le dice que acepta comandos de HTML en el javascript y acepte lo del resultado y lo mande para despues del script
+            }
+            </script>
 </body>
 </html>
